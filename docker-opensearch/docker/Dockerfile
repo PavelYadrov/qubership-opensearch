@@ -46,7 +46,7 @@ RUN echo "Download OpenSearch plugins..." \
        exit 1; \
      fi
 
-COPY --from=maven-builder /build/target/opensearch-filter-plugin-2.17.1.0.zip  ${OPENSEARCH_HOME}/dist/opensearch-filter-plugin/opensearch-filter-plugin-2.17.1.0.zip
+COPY --from=builder /build/target/opensearch-filter-plugin-2.17.1.0.zip  ${OPENSEARCH_HOME}/dist/opensearch-filter-plugin/opensearch-filter-plugin-2.17.1.0.zip
 
 # Adapt grants
 RUN set -x \
