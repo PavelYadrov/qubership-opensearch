@@ -57,21 +57,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up JDK for Maven Build
-        if: ${{ matrix.component.name == 'qubership-docker-opensearch' }}
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - name: Build Maven Project
-        if: ${{ matrix.component.name == 'qubership-docker-opensearch' }}
-        run: |
-          cd docker-opensearch/opensearch-filter-plugin
-          mvn clean package
-      - name: Archive build output
-        if: ${{ matrix.component.name == 'qubership-docker-opensearch' }}
-        run: |
-          mv docker-opensearch/opensearch-filter-plugin/target/opensearch-filter-plugin-2.17.1.0.zip docker-opensearch/docker/opensearch-filter-plugin-2.17.1.0.zip
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -104,9 +89,3 @@ jobs:
           push: ${{ env.PUSH }}
           tags: ghcr.io/${{ env.GITHUB_GROUP }}/${{ matrix.component.name }}:${{ env.TAG_NAME }}
           provenance: false
-      - uses: actions/delete-package-versions@v5
-        with:
-          package-name: ${{ matrix.component.name }}
-          package-type: 'container'
-          package-version-ids: ${{ steps.get-ids-for-delete.outputs.ids-for-delete }}
-        if: ${{ steps.get-ids-for-delete.outputs.ids-for-delete != '' }}
